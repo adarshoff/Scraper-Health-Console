@@ -47,6 +47,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+dist_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "frontend", "dist")
+assets_dir = os.path.join(dist_dir, "assets")
+if os.path.exists(assets_dir):
+    from fastapi.staticfiles import StaticFiles
+    app.mount("/assets", StaticFiles(directory=assets_dir), name="assets")
+
 @app.get("/")
 @app.get("/index.html")
 async def read_root():
@@ -480,3 +486,18 @@ async def run_terminal_script():
     output_text = await asyncio.to_thread(execute_script)
     from fastapi import Response
     return Response(content=output_text, media_type="text/plain; charset=utf-8")
+
+
+@app.get("/{full_path:path}")
+async def serve_spa_or_static(full_path: str):
+    file_path = os.path.join(dist_dir, full_path)
+    if os.path.exists(file_path) and os.path.isfile(file_path):
+        from fastapi.responses import FileResponse
+        return FileResponse(file_path)
+    index_path = os.path.join(dist_dir, "index.html")
+    if os.path.exists(index_path):
+        with open(index_path, "r", encoding="utf-8") as f:
+            html_content = f.read()
+        from fastapi.responses import HTMLResponse
+        return HTMLResponse(content=html_content)
+    return {"status": "healthy", "service": "Scraper Health Console API"}
