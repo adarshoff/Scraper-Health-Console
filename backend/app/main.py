@@ -47,18 +47,29 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-dist_dir = os.path.join(os.path.dirname(__file__), "static")
-assets_dir = os.path.join(dist_dir, "assets")
-if os.path.exists(assets_dir):
-    from fastapi.staticfiles import StaticFiles
-    app.mount("/assets", StaticFiles(directory=assets_dir), name="assets")
+def find_index_html():
+    base_dir = os.path.dirname(__file__)
+    root_dir = os.path.dirname(os.path.dirname(base_dir))
+    candidates = [
+        os.path.join(base_dir, "static", "index.html"),
+        os.path.join(root_dir, "backend", "app", "static", "index.html"),
+        os.path.join(root_dir, "frontend", "dist", "index.html"),
+        os.path.join(root_dir, "static", "index.html"),
+        os.path.join(root_dir, "index.html"),
+        "/var/task/backend/app/static/index.html",
+        "/var/task/frontend/dist/index.html",
+    ]
+    for p in candidates:
+        if os.path.exists(p):
+            return p
+    return None
+
 
 @app.get("/")
 @app.get("/index.html")
 async def read_root():
-    dist_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "frontend", "dist")
-    index_path = os.path.join(dist_dir, "index.html")
-    if os.path.exists(index_path):
+    index_path = find_index_html()
+    if index_path and os.path.exists(index_path):
         with open(index_path, "r", encoding="utf-8") as f:
             html_content = f.read()
         from fastapi.responses import HTMLResponse

@@ -2,7 +2,7 @@
   "buildCommand": "cd frontend && npm install && npm run build",
   "functions": {
     "api/index.py": {
-      "includeFiles": "backend/app/static/**"
+      "includeFiles": "{backend/app/static/**,frontend/dist/**}"
     }
   },
   "rewrites": [
