@@ -50,9 +50,11 @@ app.add_middleware(
 @app.middleware("http")
 async def override_path_middleware(request: Request, call_next):
     raw_path = request.query_params.get("__path__")
-    if raw_path:
+    if raw_path is not None:
         target = raw_path.lstrip("/")
         request.scope["path"] = f"/api/{target}"
+    elif request.scope.get("path") == "/api/index.py":
+        request.scope["path"] = "/"
     return await call_next(request)
 
 def find_index_html():
