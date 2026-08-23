@@ -47,6 +47,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.get("/")
+@app.get("/api")
+async def read_root():
+    return {"status": "healthy", "service": "Scraper Health Console API", "version": "1.0.0"}
+
+
 @app.get("/health")
 async def health_check():
     return {"status": "healthy", "service": "Scraper Health Console Engine", "version": "1.0.0"}
