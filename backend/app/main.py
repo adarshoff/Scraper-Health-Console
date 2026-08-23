@@ -55,73 +55,14 @@ async def override_path_middleware(request: Request, call_next):
         request.scope["path"] = f"/api/{target}"
     return await call_next(request)
 
-def find_index_html():
-    base_dir = os.path.dirname(__file__)
-    root_dir = os.path.dirname(os.path.dirname(base_dir))
-    candidates = [
-        os.path.join(base_dir, "static", "index.html"),
-        os.path.join(root_dir, "backend", "app", "static", "index.html"),
-        os.path.join(root_dir, "frontend", "dist", "index.html"),
-        os.path.join(root_dir, "static", "index.html"),
-        os.path.join(root_dir, "index.html"),
-        "/var/task/backend/app/static/index.html",
-        "/var/task/frontend/dist/index.html",
-    ]
-    for p in candidates:
-        if os.path.exists(p):
-            return p
-    return None
-
-INDEX_HTML_PATH = find_index_html()
-INDEX_HTML_CONTENT = ""
-if INDEX_HTML_PATH and os.path.exists(INDEX_HTML_PATH):
-    try:
-        with open(INDEX_HTML_PATH, "r", encoding="utf-8") as f:
-            INDEX_HTML_CONTENT = f.read()
-    except Exception:
-        pass
-
-
 @app.get("/")
-@app.get("/index.html")
-async def read_root(request: Request):
-    # Ensure API requests never get index.html
-    if request.url.path.startswith("/api"):
-        return {"status": "healthy", "service": "Scraper Health Console API", "version": "1.0.0"}
-    content = INDEX_HTML_CONTENT
-    if not content:
-        p = find_index_html()
-        if p and os.path.exists(p):
-            try:
-                with open(p, "r", encoding="utf-8") as f:
-                    content = f.read()
-            except Exception:
-                pass
-    if content:
-        from fastapi.responses import HTMLResponse
-        return HTMLResponse(content=content)
+async def read_root():
     return {"status": "healthy", "service": "Scraper Health Console API", "version": "1.0.0"}
-
-
 
 @app.get("/health")
 @app.get("/api/health")
 async def health_check():
     return {"status": "healthy", "service": "Scraper Health Console Engine", "version": "1.0.0"}
-
-
-@app.get("/api/debug-files")
-async def debug_files():
-    static_files = []
-    if os.path.exists(dist_dir):
-        for root, dirs, files in os.walk(dist_dir):
-            for file in files:
-                static_files.append(os.path.relpath(os.path.join(root, file), dist_dir))
-    return {
-        "dist_dir": dist_dir,
-        "dist_dir_exists": os.path.exists(dist_dir),
-        "files": static_files
-    }
 
 
 @app.get("/collectors")
