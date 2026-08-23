@@ -47,6 +47,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.middleware("http")
+async def override_path_middleware(request: Request, call_next):
+    raw_path = request.query_params.get("__path__")
+    if raw_path:
+        target = raw_path.lstrip("/")
+        request.scope["path"] = f"/api/{target}"
+    return await call_next(request)
+
 def find_index_html():
     base_dir = os.path.dirname(__file__)
     root_dir = os.path.dirname(os.path.dirname(base_dir))
@@ -94,15 +102,6 @@ async def read_root(request: Request):
         return HTMLResponse(content=content)
     return {"status": "healthy", "service": "Scraper Health Console API", "version": "1.0.0"}
 
-
-@app.get("/api/{path:path}")
-async def catch_api(path: str, request: Request):
-    return {
-        "received_path": path,
-        "full_url": str(request.url),
-        "request_path": request.url.path,
-        "headers": dict(request.headers)
-    }
 
 
 @app.get("/health")
