@@ -76,11 +76,10 @@ if INDEX_HTML_PATH and os.path.exists(INDEX_HTML_PATH):
 
 @app.get("/")
 @app.get("/index.html")
-@app.get("/api")
-@app.get("/api/")
-@app.get("/api/index")
-@app.get("/api/index.py")
-async def read_root():
+async def read_root(request: Request):
+    # Ensure API requests never get index.html
+    if request.url.path.startswith("/api"):
+        return {"status": "healthy", "service": "Scraper Health Console API", "version": "1.0.0"}
     content = INDEX_HTML_CONTENT
     if not content:
         p = find_index_html()
