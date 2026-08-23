@@ -64,16 +64,35 @@ def find_index_html():
             return p
     return None
 
+INDEX_HTML_PATH = find_index_html()
+INDEX_HTML_CONTENT = ""
+if INDEX_HTML_PATH and os.path.exists(INDEX_HTML_PATH):
+    try:
+        with open(INDEX_HTML_PATH, "r", encoding="utf-8") as f:
+            INDEX_HTML_CONTENT = f.read()
+    except Exception:
+        pass
+
 
 @app.get("/")
 @app.get("/index.html")
+@app.get("/api")
+@app.get("/api/")
+@app.get("/api/index")
+@app.get("/api/index.py")
 async def read_root():
-    index_path = find_index_html()
-    if index_path and os.path.exists(index_path):
-        with open(index_path, "r", encoding="utf-8") as f:
-            html_content = f.read()
+    content = INDEX_HTML_CONTENT
+    if not content:
+        p = find_index_html()
+        if p and os.path.exists(p):
+            try:
+                with open(p, "r", encoding="utf-8") as f:
+                    content = f.read()
+            except Exception:
+                pass
+    if content:
         from fastapi.responses import HTMLResponse
-        return HTMLResponse(content=html_content)
+        return HTMLResponse(content=content)
     return {"status": "healthy", "service": "Scraper Health Console API", "version": "1.0.0"}
 
 
