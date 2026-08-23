@@ -5,7 +5,7 @@ import aiosqlite
 from typing import List, Dict, Any, Optional
 from datetime import datetime
 
-DB_PATH = os.getenv("DATABASE_PATH", os.path.join(os.path.dirname(__file__), "..", "data", "scraper_console.db"))
+DB_PATH = os.getenv("DATABASE_PATH", "/tmp/scraper_console.db" if os.environ.get("VERCEL") else os.path.join(os.path.dirname(__file__), "..", "data", "scraper_console.db"))
 
 def get_db_path() -> str:
     os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
@@ -101,6 +101,12 @@ def init_db_sync():
 
 async def get_db_connection() -> aiosqlite.Connection:
     db_file = get_db_path()
+    init_db_sync()
+    try:
+        from backend.app.seed_data import seed_database_if_empty
+        seed_database_if_empty()
+    except Exception:
+        pass
     conn = await aiosqlite.connect(db_file)
     conn.row_factory = aiosqlite.Row
     return conn
