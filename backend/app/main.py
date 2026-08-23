@@ -49,14 +49,8 @@ app.add_middleware(
 
 @app.get("/")
 @app.get("/api")
-@app.get("/api/index")
-@app.get("/api/index.py")
+@app.get("/api/health")
 async def read_root():
-    dist_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "frontend", "dist")
-    index_path = os.path.join(dist_dir, "index.html")
-    if os.path.exists(index_path):
-        from fastapi.responses import FileResponse
-        return FileResponse(index_path)
     return {"status": "healthy", "service": "Scraper Health Console API", "version": "1.0.0"}
 
 
