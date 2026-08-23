@@ -39,8 +39,11 @@ export const Header: React.FC<HeaderProps> = ({ collectors, isSseConnected }) =>
           <span className="font-bold text-slate-400">REALTIME EVENT STREAM:</span>
           <span className="text-cyan-300 font-semibold transition-all duration-500">{tickerMessage}</span>
         </div>
-        <div className="flex items-center space-x-3 text-slate-500">
-          <span>SERVER: 127.0.0.1:8000</span>
+        <div className="flex items-center space-x-3 text-slate-400">
+          <span className="text-emerald-400 font-bold flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+            BACKEND ENGINE: ONLINE
+          </span>
           <span>•</span>
           <span className="text-emerald-400">AUTO-APPROVE: ACTIVE</span>
         </div>
