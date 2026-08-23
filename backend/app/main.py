@@ -100,7 +100,8 @@ async def catch_api(path: str, request: Request):
     return {
         "received_path": path,
         "full_url": str(request.url),
-        "request_path": request.url.path
+        "request_path": request.url.path,
+        "headers": dict(request.headers)
     }
 
 
