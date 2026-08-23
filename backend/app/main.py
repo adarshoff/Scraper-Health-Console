@@ -66,6 +66,17 @@ async def read_root():
     return {"status": "healthy", "service": "Scraper Health Console API", "version": "1.0.0"}
 
 
+@app.get("/assets/{file_name}")
+async def serve_asset(file_name: str):
+    dist_dir = os.path.join(os.path.dirname(__file__), "static")
+    file_path = os.path.join(dist_dir, "assets", file_name)
+    if os.path.exists(file_path):
+        from fastapi.responses import FileResponse
+        return FileResponse(file_path)
+    from fastapi import HTTPException
+    raise HTTPException(status_code=404, detail="Asset not found")
+
+
 @app.get("/health")
 @app.get("/api/health")
 async def health_check():
@@ -500,18 +511,3 @@ async def run_terminal_script():
     output_text = await asyncio.to_thread(execute_script)
     from fastapi import Response
     return Response(content=output_text, media_type="text/plain; charset=utf-8")
-
-
-@app.get("/{full_path:path}")
-async def serve_spa_or_static(full_path: str):
-    file_path = os.path.join(dist_dir, full_path)
-    if os.path.exists(file_path) and os.path.isfile(file_path):
-        from fastapi.responses import FileResponse
-        return FileResponse(file_path)
-    index_path = os.path.join(dist_dir, "index.html")
-    if os.path.exists(index_path):
-        with open(index_path, "r", encoding="utf-8") as f:
-            html_content = f.read()
-        from fastapi.responses import HTMLResponse
-        return HTMLResponse(content=html_content)
-    return {"status": "healthy", "service": "Scraper Health Console API"}
