@@ -47,7 +47,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-dist_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "frontend", "dist")
+dist_dir = os.path.join(os.path.dirname(__file__), "static")
 assets_dir = os.path.join(dist_dir, "assets")
 if os.path.exists(assets_dir):
     from fastapi.staticfiles import StaticFiles
