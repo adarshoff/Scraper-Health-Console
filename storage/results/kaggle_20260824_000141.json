@@ -1,0 +1,42 @@
+[
+  {
+    "product_name": "RSNA 2024 Lumbar Spine Degenerative Classification",
+    "name": "RSNA 2024 Lumbar Spine Degenerative Classification",
+    "title": "RSNA 2024 Lumbar Spine Degenerative Classification",
+    "description": "Classify lumbar spine MRI conditions to assist radiologist workflows.",
+    "price": "$50,000",
+    "url": "https://www.kaggle.com/competitions/rsna-2024-lumbar-spine-degenerative-classification"
+  },
+  {
+    "product_name": "Home Credit - Credit Risk Model Stability",
+    "name": "Home Credit - Credit Risk Model Stability",
+    "title": "Home Credit - Credit Risk Model Stability",
+    "description": "Evaluate credit risk stability over time with modern ML techniques.",
+    "price": "$105,000",
+    "url": "https://www.kaggle.com/competitions/home-credit-credit-risk-model-stability"
+  },
+  {
+    "product_name": "LLM - Detect AI Generated Text",
+    "name": "LLM - Detect AI Generated Text",
+    "title": "LLM - Detect AI Generated Text",
+    "description": "Identify machine-written text across diverse academic essays.",
+    "price": "$50,000",
+    "url": "https://www.kaggle.com/competitions/llm-detect-ai-generated-text"
+  },
+  {
+    "product_name": "ISIC 2024 - Skin Cancer Detection",
+    "name": "ISIC 2024 - Skin Cancer Detection",
+    "title": "ISIC 2024 - Skin Cancer Detection",
+    "description": "3D TBP image processing for early skin cancer detection.",
+    "price": "$80,000",
+    "url": "https://www.kaggle.com/competitions/isic-2024-skin-cancer-detection"
+  },
+  {
+    "product_name": "Predict Student Performance from Game Play",
+    "name": "Predict Student Performance from Game Play",
+    "title": "Predict Student Performance from Game Play",
+    "description": "Predict student learning outcomes from educational game log data.",
+    "price": "$55,000",
+    "url": "https://www.kaggle.com/competitions/predict-student-performance-from-game-play"
+  }
+]

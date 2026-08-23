@@ -1,0 +1,38 @@
+[
+  {
+    "name": "All products",
+    "title": "All products | Books to Scrape - Sandbox",
+    "description": "",
+    "price": "$120.00",
+    "category": "Web Product",
+    "availability": "In Stock",
+    "url": "http://books.toscrape.com"
+  },
+  {
+    "name": "A Light in the ...",
+    "title": "All products | Books to Scrape - Sandbox",
+    "description": "",
+    "price": "$120.00",
+    "category": "Web Product",
+    "availability": "In Stock",
+    "url": "http://books.toscrape.com"
+  },
+  {
+    "name": "Tipping the Velvet",
+    "title": "All products | Books to Scrape - Sandbox",
+    "description": "",
+    "price": "$120.00",
+    "category": "Web Product",
+    "availability": "In Stock",
+    "url": "http://books.toscrape.com"
+  },
+  {
+    "name": "Soumission",
+    "title": "All products | Books to Scrape - Sandbox",
+    "description": "",
+    "price": "$120.00",
+    "category": "Web Product",
+    "availability": "In Stock",
+    "url": "http://books.toscrape.com"
+  }
+]

@@ -1,0 +1,17 @@
+[
+  {
+    "competition_name": "Titanic - Machine Learning from Disaster",
+    "description": "Predict survival on the Titanic",
+    "prize": "$25,000"
+  },
+  {
+    "competition_name": "House Prices - Advanced Regression Techniques",
+    "description": "Predict sales prices and practice feature engineering",
+    "prize": "Knowledge"
+  },
+  {
+    "competition_name": "Spaceship Titanic",
+    "description": "Predict which passengers are transported to an alternate dimension",
+    "prize": "$50,000"
+  }
+]
