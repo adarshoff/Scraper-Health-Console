@@ -95,15 +95,13 @@ async def read_root(request: Request):
     return {"status": "healthy", "service": "Scraper Health Console API", "version": "1.0.0"}
 
 
-@app.get("/assets/{file_name}")
-async def serve_asset(file_name: str):
-    dist_dir = os.path.join(os.path.dirname(__file__), "static")
-    file_path = os.path.join(dist_dir, "assets", file_name)
-    if os.path.exists(file_path):
-        from fastapi.responses import FileResponse
-        return FileResponse(file_path)
-    from fastapi import HTTPException
-    raise HTTPException(status_code=404, detail="Asset not found")
+@app.get("/api/{path:path}")
+async def catch_api(path: str, request: Request):
+    return {
+        "received_path": path,
+        "full_url": str(request.url),
+        "request_path": request.url.path
+    }
 
 
 @app.get("/health")
