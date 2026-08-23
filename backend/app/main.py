@@ -72,6 +72,20 @@ async def health_check():
     return {"status": "healthy", "service": "Scraper Health Console Engine", "version": "1.0.0"}
 
 
+@app.get("/api/debug-files")
+async def debug_files():
+    static_files = []
+    if os.path.exists(dist_dir):
+        for root, dirs, files in os.walk(dist_dir):
+            for file in files:
+                static_files.append(os.path.relpath(os.path.join(root, file), dist_dir))
+    return {
+        "dist_dir": dist_dir,
+        "dist_dir_exists": os.path.exists(dist_dir),
+        "files": static_files
+    }
+
+
 @app.get("/collectors")
 @app.get("/api/collectors")
 async def list_collectors():
