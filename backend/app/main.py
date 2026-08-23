@@ -55,8 +55,45 @@ async def override_path_middleware(request: Request, call_next):
         request.scope["path"] = f"/api/{target}"
     return await call_next(request)
 
+def find_index_html():
+    base_dir = os.path.dirname(__file__)
+    root_dir = os.path.dirname(os.path.dirname(base_dir))
+    candidates = [
+        os.path.join(base_dir, "static", "index.html"),
+        os.path.join(root_dir, "backend", "app", "static", "index.html"),
+        "/var/task/backend/app/static/index.html",
+    ]
+    for p in candidates:
+        if os.path.exists(p):
+            return p
+    return None
+
+INDEX_HTML_PATH = find_index_html()
+INDEX_HTML_CONTENT = ""
+if INDEX_HTML_PATH and os.path.exists(INDEX_HTML_PATH):
+    try:
+        with open(INDEX_HTML_PATH, "r", encoding="utf-8") as f:
+            INDEX_HTML_CONTENT = f.read()
+    except Exception:
+        pass
+
 @app.get("/")
-async def read_root():
+@app.get("/index.html")
+async def read_root(request: Request):
+    if request.url.path.startswith("/api"):
+        return {"status": "healthy", "service": "Scraper Health Console API", "version": "1.0.0"}
+    content = INDEX_HTML_CONTENT
+    if not content:
+        p = find_index_html()
+        if p and os.path.exists(p):
+            try:
+                with open(p, "r", encoding="utf-8") as f:
+                    content = f.read()
+            except Exception:
+                pass
+    if content:
+        from fastapi.responses import HTMLResponse
+        return HTMLResponse(content=content)
     return {"status": "healthy", "service": "Scraper Health Console API", "version": "1.0.0"}
 
 @app.get("/health")
